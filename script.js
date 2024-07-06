@@ -1,20 +1,32 @@
-function calculateMinCost() {
-  //your code here
-  let string = document.getElementById("rope-lengths").value;
+// script.js
 
-	let arr = string.split(",");
-	let finalValue =0;
-	while(arr.length > 1){
-		arr.sort((a,b) =>{return(a-b)});
-		let value = parseInt (arr.shift());    // converts to int and holds first element in the array.
-		let value1 = parseInt(arr.shift());    // hold 2nd element.
-		let mainValue = value + value1;
-		finalValue = finalValue + mainValue;
-		arr.push(mainValue);
+function minCostOfRopes() {
+  const input = document.querySelector('input[type="text"]').value;
+  const ropes = input.split(',').map(Number);
+  const heap = [];
 
-	}
-  let result = document.getElementById("result");
-	result.innerText = finalValue;
-	return finalValue;
+  // Create a min heap
+  for (let i = 0; i < ropes.length; i++) {
+    heap.push(ropes[i]);
+  }
 
+  heap.sort((a, b) => a - b);
+
+  let cost = 0;
+
+  while (heap.length > 1) {
+    const first = heap.shift();
+    const second = heap.shift();
+    const newRope = first + second;
+    cost += newRope;
+    heap.push(newRope);
+    heap.sort((a, b) => a - b);
+  }
+
+  document.getElementById('result').innerHTML = `Minimum cost: ${cost}`;
 }
+
+document.querySelector('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  minCostOfRopes();
+});
